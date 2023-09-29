@@ -23,6 +23,8 @@ app.message(/.*/, noBotMessages, messageHandler.parseAll);
 
 app.command('/elle', slashHandler.elleSlash);
 
+app.event('reaction_added', eventHandler.reactionAdded);
+
 (async () => {
   // Start your app
   global.BOT_CONFIG = {channels: [process.env.SLACK_TESTS_CHANNEL]};

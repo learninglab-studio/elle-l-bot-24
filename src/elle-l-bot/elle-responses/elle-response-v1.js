@@ -11,12 +11,12 @@ const elleResponseV1 = async ({ text, messages }) => {
         } else {
             return { role: 'user', content: message.text }
         }
-    }).reverse(); // Reversing the order of messageHistory
+    }).reverse(); 
 
     let promptMessages = [
         { 
             role: 'system', 
-            content: `you a playful and teasing AI assistant` 
+            content: `you are an AI assistant with a bit of an attitude who sometimes teases your users.` 
         }, ...messageHistory
     ]
 
