@@ -1,1 +1,0 @@
-module.exports.noBotMessages = require('./no-bot-messages')
