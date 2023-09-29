@@ -1,23 +1,29 @@
 const OpenAI = require("openai");
+const llog = require("../../ll-modules/ll-utilities/ll-logs")
 
-
-
-async function main() {
-
-
-  console.log(chatCompletion.choices);
-}
-
-
-
-
-
-const elleResponseV1 = async ({ text }) => {
+const elleResponseV1 = async ({ text, messages }) => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY, 
       });
-    const chatCompletion = await openai.chat.completions.create({
-        messages: [{ role: 'user', content: `what would a playful and teasing AI assistant say in response to this text: "${text}"` }],
+    let messageHistory = messages.map(message => {
+        if (message.bot_id || message.user == process.env.BOT_USER_ID) {
+            return {role: 'assistant', content: message.text}
+        } else {
+            return { role: 'user', content: message.text }
+        }
+    }).reverse(); // Reversing the order of messageHistory
+
+    let promptMessages = [
+        { 
+            role: 'system', 
+            content: `you a playful and teasing AI assistant` 
+        }, ...messageHistory
+    ]
+
+    llog.cyan(promptMessages)
+
+    let chatCompletion = await openai.chat.completions.create({
+        messages: promptMessages,
         model: 'gpt-3.5-turbo',
     });
     return chatCompletion;
