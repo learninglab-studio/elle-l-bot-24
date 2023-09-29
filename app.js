@@ -1,24 +1,31 @@
 const { App } = require('@slack/bolt');
-require('dotenv').config()
+const path = require('path');
+const llog = require('./src/ll-modules/ll-utilities/ll-logs')
+const { noBotMessages } = require('./src/ll-modules/ll-slack-tools/middleware')
+const { messageHandler, eventHandler, actionHandler, slashHandler } = require('./src/elle-l-bot');  
+
+const logRe = /^log/;
+const everything = /.*/;
+
+require('dotenv').config();
+global.ROOT_DIR = path.resolve(__dirname);
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   socketMode: true,
   appToken: process.env.SLACK_APP_TOKEN,
-  // Socket Mode doesn't listen on a port, but in case you want your app to respond to OAuth,
-  // you still need to listen on some port!
   port: process.env.PORT || 3000
 });
 
-// Listens to incoming messages that contain "hello"
-app.message('hello', async ({ message, say }) => {
-  // say() sends a message to the channel where the event was triggered
-  await say(`Hey there <@${message.user}>!`);
-});
+app.message('testing testing', noBotMessages, messageHandler.testing);
+app.message(/.*/, noBotMessages, messageHandler.parseAll);
+
+app.command('/elle', slashHandler.elleSlash);
 
 (async () => {
   // Start your app
+  global.BOT_CONFIG = {channels: [process.env.SLACK_TESTS_CHANNEL]};
   await app.start();
 
   console.log('⚡️ Bolt app is running!');
