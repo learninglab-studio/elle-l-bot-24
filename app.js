@@ -7,7 +7,10 @@ const { messageHandler, eventHandler, actionHandler, slashHandler } = require('.
 const logRe = /^log/;
 const everything = /.*/;
 
-require('dotenv').config();
+require('dotenv').config({
+  path: path.resolve(__dirname, `.env.${process.env.NODE_ENV}`)
+});
+
 global.ROOT_DIR = path.resolve(__dirname);
 
 const app = new App({
