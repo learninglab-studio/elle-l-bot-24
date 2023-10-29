@@ -22,6 +22,9 @@ exports.parseAll = async ({ client, message, say }) => {
         let openAiResult = await elleResponseV2({ text: message.text, messages: result.messages });
         llog.magenta(openAiResult)
         let slackResult = await say(openAiResult.choices[0].message.content);
+    } else if (message.channel == "C060Z16VA4S") {
+        llog.blue(`handling message in hackmd-to-pdf channel`, message);
+        // if (message.blocks && message)
     } else {
         llog.magenta(`some other message we aren't handling now--uncomment message-handler line 27 to get the json`)
         llog.blue(`message wasn't in array ${JSON.stringify(BOT_CONFIG.channels, null, 4)}`)

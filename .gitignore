@@ -78,8 +78,6 @@ _temp/
 .env.production
 .env.prod
 .env.pro
-.env.cli
-.env.*
 
 .DS_Store
 
@@ -118,4 +116,5 @@ _tests
 
 # misc
 .DS_Store
+.env.*
 *.pem
